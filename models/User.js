@@ -23,6 +23,18 @@ const UserSchema = new Schema(
             message: value => `${value} is not a valid email address.`
         }
       },
+      thoughts: [
+          {
+              type: Schema.Types.ObjectId,
+              ref: "Thought"
+          }
+      ],
+      friends: [
+          {
+            type: Schema.Types.ObjectId,
+            ref: "User"
+          }
+      ],
       createdAt: {
         type: Date,
         default: Date.now,
