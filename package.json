@@ -1,0 +1,25 @@
+{
+  "name": "inter-App",
+  "version": "1.0.0",
+  "description": "Interactive social networking API designed for any frontend platform. Ready, set, inter-App!",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DrDano/inter-App.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^6.2.4"
+  },
+  "bugs": {
+    "url": "https://github.com/DrDano/inter-App/issues"
+  },
+  "homepage": "https://github.com/DrDano/inter-App#readme"
+}
