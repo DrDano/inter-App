@@ -1,10 +1,10 @@
 const { Schema, model } = require("mongoose");
+const ReactionSchema = require("./Reaction");
 
 const ThoughtSchema = new Schema(
   {
     thoughtText: {
       type: String,
-      unique: true,
       required: true,
       trim: true,
       minlength: 1,
@@ -14,12 +14,7 @@ const ThoughtSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
-    reactions: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Reaction",
-      },
-    ],
+    reactions: [ReactionSchema.length],
     createdAt: {
       type: Date,
       default: Date.now,
@@ -36,7 +31,7 @@ const ThoughtSchema = new Schema(
 );
 
 ThoughtSchema.virtual("reactionCount").get(function () {
-  return this.reactions.reduce((total, reactions) => total + reactions.length, 0);
+  return this.reactions.length;
 });
 
 const Thought = model("Pizza", ThoughtSchema);
