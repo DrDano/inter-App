@@ -14,7 +14,7 @@ const ThoughtSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
-    reactions: [ReactionSchema.length],
+    reactions: [ReactionSchema],
     createdAt: {
       type: Date,
       default: Date.now,
@@ -31,7 +31,9 @@ const ThoughtSchema = new Schema(
 );
 
 ThoughtSchema.virtual("reactionCount").get(function () {
-  return this.reactions.length;
+  if (this.reactions.length) {
+    return this.reactions.length;
+  }
 });
 
 const Thought = model("Pizza", ThoughtSchema);
