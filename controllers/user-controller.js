@@ -69,7 +69,12 @@ const userController = {
             const userData = await User.findOne({
                 _id: req.params.id
             })
-            userData.userName = req.body.userName;
+            if (req.body.userName) {
+                userData.userName = req.body.userName;
+            }
+            if (req.body.email) {
+                userData.email = req.body.email;
+            }
             userData.save();
             res.json(userData);
         } catch (error) {
@@ -83,6 +88,10 @@ const userController = {
             const userData = await User.deleteOne({
                 _id: req.params.id
             })
+            if (!userData._id) {
+                console.log("no user found with that id");
+                return res.status(404).json({ message: "no user found with that id" })
+            }
             res.json(userData);
         } catch (error) {
             console.log(error);
