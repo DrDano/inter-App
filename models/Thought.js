@@ -10,9 +10,13 @@ const ThoughtSchema = new Schema(
       minlength: 1,
       maxlength: 280,
     },
-    user: {
+    userId: {
+      type: String,
+      required: true,
+    },
+    userName: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "user"
     },
     reactions: [ReactionSchema],
     createdAt: {
