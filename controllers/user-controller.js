@@ -20,7 +20,7 @@ const userController = {
             res.json(userData);
         } catch (error) {
             console.log(error);
-            res.status(400).json(error);
+            res.status(500).json(error);
         }
     },
 
@@ -47,7 +47,7 @@ const userController = {
             res.json(userData);
         } catch (error) {
             console.log(error);
-            return;
+            res.status(500).json(error);
         }
     },
 
@@ -55,12 +55,12 @@ const userController = {
         try {
             const userData = await User.create(req.body);
             if (!userData) {
-                res.status(500).json({message: "There was an internal error, please try again later."})
+                res.status(400).json({message: "Please provide a username and email address"})
             }
             res.json(userData);
         } catch (error) {
             console.log(error);
-            return;
+            res.status(500).json(error);
         }
     },
 
@@ -79,7 +79,7 @@ const userController = {
             res.json(userData);
         } catch (error) {
             console.log(error);
-            return;
+            res.status(500).json(error);
         }
     },
 
@@ -95,7 +95,7 @@ const userController = {
             res.json(userData);
         } catch (error) {
             console.log(error);
-            return;
+            res.status(500).json(error);
         }
     }
 }
