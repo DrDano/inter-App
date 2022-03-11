@@ -3,7 +3,7 @@ const { User } = require('../models');
 const userController = {
     async getAllUsers(req, res) {
         try {
-            if (! User.path) {
+            if (!User.path) {
                 const userData = await User.find({})
                 res.json(userData);
                 return;
@@ -26,16 +26,24 @@ const userController = {
 
     async getUser(req, res) {
         try {
+            if (!User.path) {
+                const userData = await User.findOne({
+                    _id: req.params.id
+                })
+                res.json(userData);
+                return;
+            }
             const userData = await User.findOne({
-                id: req.params.id
+                _id: req.params.id
             })
             .populate({
                 path: "thoughts",
                 model: "Thought"
             })
-            if (!userData) {
-                res.status(404).json({message: "User not found"});
-            }
+            .populate({
+                path: "friends",
+                model: "User"
+            })
             res.json(userData);
         } catch (error) {
             console.log(error);
@@ -49,6 +57,32 @@ const userController = {
             if (!userData) {
                 res.status(500).json({message: "There was an internal error, please try again later."})
             }
+            res.json(userData);
+        } catch (error) {
+            console.log(error);
+            return;
+        }
+    },
+
+    async updateUser(req, res) {
+        try {
+            const userData = await User.findOne({
+                _id: req.params.id
+            })
+            userData.userName = req.body.userName;
+            userData.save();
+            res.json(userData);
+        } catch (error) {
+            console.log(error);
+            return;
+        }
+    },
+
+    async deleteUser(req, res) {
+        try {
+            const userData = await User.deleteOne({
+                _id: req.params.id
+            })
             res.json(userData);
         } catch (error) {
             console.log(error);
