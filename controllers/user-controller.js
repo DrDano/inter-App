@@ -26,13 +26,13 @@ const userController = {
 
     async getUser(req, res) {
         try {
-            if (!User.path) {
-                const userData = await User.findOne({
-                    _id: req.params.id
-                })
-                res.json(userData);
-                return;
-            }
+            // if (!User.path) {
+            //     const userData = await User.findOne({
+            //         _id: req.params.id
+            //     })
+            //     res.json(userData);
+            //     return;
+            // }
             const userData = await User.findOne({
                 _id: req.params.id
             })
@@ -42,7 +42,7 @@ const userController = {
             })
             .populate({
                 path: "friends",
-                model: "User"
+                model: "Thought"
             })
             res.json(userData);
         } catch (error) {

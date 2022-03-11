@@ -16,7 +16,8 @@ const thoughtController = {
             const thoughtData = await Thought.create(req.body);
             const userData = await User.updateOne(
                 { _id: req.body.userId },
-                {thoughts: thoughtData._id}
+                {$push: {thoughts: thoughtData}},
+                {new: true}
                 );
             if (!userData) {
                 console.log("No user found with that id")
