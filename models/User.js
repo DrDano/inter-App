@@ -15,10 +15,8 @@ const UserSchema = new Schema(
         trim: true,
         validate: {
             validator: e => {
-                const emailRegex = RegExp(
-                    /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-                  );
-                return e === emailRegex;
+              const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+              return emailRegex.test(e);
             },
             message: value => `${value} is not a valid email address.`
         }
@@ -38,7 +36,7 @@ const UserSchema = new Schema(
       createdAt: {
         type: Date,
         default: Date.now,
-        get: (createdAtVal) => dateFormat(createdAtVal)
+        // get: (createdAtVal) => dateFormat(createdAtVal)
       },
     },
     {
