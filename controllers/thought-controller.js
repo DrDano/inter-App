@@ -71,6 +71,9 @@ const thoughtController = {
         }
     },
 
+    // TODO: "DELETE A THOUGHT"
+    // =====================================================
+
     async deleteAllThoughts(req, res) {
         try {
             const thoughtData = await Thought.deleteMany({})
@@ -97,6 +100,23 @@ const thoughtController = {
             }
             res.json(thoughtData);
             
+        } catch (error) {
+            console.log(error);
+            res.status(500).json(error);
+        }
+    },
+
+    async deleteReaction(req, res) {
+        try {
+            const thoughtData = await Thought.updateOne(
+                { _id: req.params.id },
+                { $pull: { reactions: { reactionId: req.body.reactionId } } }
+                );
+            if (!thoughtData) {
+                console.log("No thought by that id");
+                return res.status(500).json({ message: "No thought by that id" })
+            }
+            res.json(thoughtData);
         } catch (error) {
             console.log(error);
             res.status(500).json(error);
