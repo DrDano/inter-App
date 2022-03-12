@@ -138,6 +138,23 @@ const userController = {
       res.status(500).json(error);
     }
   },
+
+  async removeFriend(req, res) {
+      try {
+        const userData = await User.updateOne(
+            { _id: req.params.id },
+            { $pull: { friends: req.body.friendId } }
+          );
+          if (!req.body.friendId | !req.params.id) {
+              console.log("Friend and User Ids are required");
+              res.status(404).json({ message: "Friend and User Ids are required" });
+          }
+          res.json(userData);
+      } catch (error) {
+        console.log(error);
+        res.status(500).json(error);
+      }
+  }
 };
 
 module.exports = userController;
