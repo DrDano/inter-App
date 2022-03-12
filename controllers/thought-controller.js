@@ -31,6 +31,27 @@ const thoughtController = {
         }
     },
 
+    async updateThought(req, res) {
+        try {
+            const thoughtData = await Thought.findOne({
+              _id: req.params.id,
+            });
+            if (!req.body.userId) {
+                console.log("A user id is required");
+                res.status(404).json({ message: "A user id is required" })
+              }
+            if (req.body.thoughtText) {
+              thoughtData.thoughtText = req.body.thoughtText;
+            }
+            thoughtData.userId = req.body.userId;
+            thoughtData.save();
+            res.json(thoughtData);
+          } catch (error) {
+            console.log(error);
+            res.status(500).json(error);
+          }
+    },
+
     async newThought(req, res) {
         try {
             const thoughtData = await Thought.create(req.body);
