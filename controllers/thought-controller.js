@@ -18,7 +18,10 @@ const thoughtController = {
 
   async getThought(req, res) {
     try {
-      const thoughtData = await Thought.findOne({ _id: req.params.id });
+      const thoughtData = await Thought.findOne({ _id: req.params.id })
+      .populate({
+        path: "user",
+      });
       if (!thoughtData) {
         console.log("No thought found with that id");
         res.status(500).json({ message: "No thought found with that id" });

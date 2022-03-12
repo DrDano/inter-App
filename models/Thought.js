@@ -14,10 +14,6 @@ const ThoughtSchema = new Schema(
       type: String,
       required: true,
     },
-    userName: {
-      type: Schema.Types.ObjectId,
-      ref: "user"
-    },
     reactions: [ReactionSchema],
     createdAt: {
       type: Date,
@@ -38,6 +34,13 @@ ThoughtSchema.virtual("reactionCount").get(function () {
   if (this.reactions.length) {
     return this.reactions.length;
   }
+});
+
+ThoughtSchema.virtual("user", {
+  ref: "User",
+  localField: "userId",
+  foreignField: "_id",
+  justOne: true,
 });
 
 const Thought = model("Thought", ThoughtSchema);
