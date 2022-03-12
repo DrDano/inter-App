@@ -3,11 +3,6 @@ const { User, Thought } = require("../models");
 const userController = {
   async getAllUsers(req, res) {
     try {
-      // if (!User.path) {
-      //     const userData = await User.find({})
-      //     res.json(userData);
-      //     return;
-      // }
       const userData = await User.find({})
         .populate({
           path: "thoughts",
@@ -17,6 +12,11 @@ const userController = {
           path: "friends",
           model: "Thought",
         });
+        if (!userData) {
+            console.log("You need to create a user first");
+            res.status(500).json({message: "You need to create a user first"});
+            return;
+        }
       res.json(userData);
     } catch (error) {
       console.log(error);
@@ -26,13 +26,6 @@ const userController = {
 
   async getUser(req, res) {
     try {
-      // if (!User.path) {
-      //     const userData = await User.findOne({
-      //         _id: req.params.id
-      //     })
-      //     res.json(userData);
-      //     return;
-      // }
       const userData = await User.findOne({
         _id: req.params.id,
       })
@@ -44,6 +37,12 @@ const userController = {
           path: "friends",
           model: "Thought",
         });
+
+        if (!userData) {
+            console.log("No user found with that id");
+            res.status(500).json({message: "No user found with that id"});
+            return
+        }
       res.json(userData);
     } catch (error) {
       console.log(error);

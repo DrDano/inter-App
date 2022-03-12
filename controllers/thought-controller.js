@@ -4,6 +4,11 @@ const thoughtController = {
     async getAllThoughts(req, res) {
         try {
             const thoughtData = await Thought.find({})
+            if (!thoughtData) {
+                console.log("You need to create a thought first");
+                res.status(500).json({message: "You need to create a thought first"});
+                return;
+            }
             res.json(thoughtData)
         } catch (error) {
             console.log(error);
@@ -13,7 +18,13 @@ const thoughtController = {
 
     async getThought(req, res) {
         try {
-            
+            const thoughtData = await Thought.findOne({ _id: req.params.id });
+            if (!thoughtData) {
+                console.log("No thought found with that id");
+                res.status(500).json({message: "No thought found with that id"});
+                return;
+            }
+            res.json(thoughtData);
         } catch (error) {
             console.log(error);
             res.status(500).json(error);
