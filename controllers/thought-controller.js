@@ -75,10 +75,28 @@ const thoughtController = {
         try {
             const thoughtData = await Thought.deleteMany({})
             if (!thoughtData) {
-                console.log("no user found with that id");
+                console.log("unable to delete records at this time due to internal server error");
                 return res.status(500).json({ message: "unable to delete records at this time due to internal server error" })
             }
             res.json(thoughtData);
+        } catch (error) {
+            console.log(error);
+            res.status(500).json(error);
+        }
+    },
+
+    async addReaction(req, res) {
+        try {
+            const thoughtData = await Thought.updateOne(
+                { _id: req.params.id },
+                { $push: { reactions: req.body } }
+                )
+            if (!thoughtData) {
+                console.log("No thought by that id");
+                return res.status(500).json({ message: "No thought by that id" })
+            }
+            res.json(thoughtData);
+            
         } catch (error) {
             console.log(error);
             res.status(500).json(error);
