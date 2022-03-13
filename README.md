@@ -9,8 +9,11 @@ Interactive social networking API designed for any frontend platform. Ready, set
 
   ## Description
 
-  ### Walktrough Video
-  <iframe src="https://drive.google.com/file/d/1QQ-1rEx9wDw4cKdFj79J6T4CsCGT1IEI/preview" alt="https://drive.google.com/file/d/1QQ-1rEx9wDw4cKdFj79J6T4CsCGT1IEI/view" width="640" height="480"></iframe>
+  ### Walk-through Video
+
+  <div>
+    <iframe src="https://drive.google.com/file/d/1QQ-1rEx9wDw4cKdFj79J6T4CsCGT1IEI/preview" width="640" height="480"></iframe>
+  </div>
   
   [Link to view video in browser](https://drive.google.com/file/d/1QQ-1rEx9wDw4cKdFj79J6T4CsCGT1IEI/view)
 
