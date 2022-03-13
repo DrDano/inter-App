@@ -111,7 +111,7 @@ const userController = {
   async deleteAllUsers(req, res) {
     try {
       const userData = await User.deleteMany({});
-      if (!userData._id) {
+      if (!userData) {
         console.log("no user found with that id");
         return res.status(404).json({ message: "no user found with that id" });
       }
