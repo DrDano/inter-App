@@ -22,6 +22,7 @@ const thoughtController = {
         _id: req.params.id,
       }).populate({
         path: "user",
+        select: "-thoughts"
       });
       if (!thoughtData) {
         console.log("No thought found with that id");
@@ -49,7 +50,7 @@ const thoughtController = {
         console.log("A 'userId' is required");
         res.status(404).json({ message: "A 'userId' is required" });
       }
-      thoughtData.userId = req.body.userId;
+      thoughtData.thoughtText = req.body.thoughtText;
       thoughtData.save();
       res.json(thoughtData);
     } catch (error) {
@@ -85,7 +86,8 @@ const thoughtController = {
       res.status(404).json({ message: "No thought by that id" });
       return;
     }
-    const thoughtData = await Thought.deleteOne({ _id: req.params.id });
+    await User.updateOne({ _id: thought.userId }, { $pull: { thoughts: thought._id } })
+    await Thought.deleteOne({ _id: req.params.id });
     res.json(thought);
   },
 
@@ -111,7 +113,7 @@ const thoughtController = {
       const thought = await Thought.findOne({ _id: req.params.id });
       if (!thought) {
         console.log("No thought by that id");
-        return res.status(500).json({ message: "No thought by that id" });
+        return res.status(404).json({ message: "No thought by that id" });
       }
       const thoughtData = await Thought.updateOne(
         { _id: req.params.id },
@@ -131,9 +133,9 @@ const thoughtController = {
         console.log("No thought by that id");
         return res.status(404).json({ message: "No thought by that id" });
       }
-      const thoughtData = await Thought.updateOne(
+      await Thought.updateOne(
         { _id: req.params.id },
-        { $pull: { reactions: { reactionId: req.body.reactionId } } }
+        { $pull: { reactions: { _id: req.body.reactionId } } }
       );
       res.json(thought);
     } catch (error) {
