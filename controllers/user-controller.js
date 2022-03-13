@@ -12,9 +12,9 @@ const userController = {
           path: "friends",
           model: "User",
         });
-      if (!userData) {
+      if (userData.length < 1) {
         console.log("You need to create a user first");
-        res.status(500).json({ message: "You need to create a user first" });
+        res.status(404).json({ message: "You need to create a user first" });
         return;
       }
       res.json(userData);
@@ -40,7 +40,7 @@ const userController = {
 
       if (!userData) {
         console.log("No user found with that id");
-        res.status(500).json({ message: "No user found with that id" });
+        res.status(404).json({ message: "No user found with that id" });
         return;
       }
       res.json(userData);
@@ -53,11 +53,6 @@ const userController = {
   async createUser(req, res) {
     try {
       const userData = await User.create(req.body);
-      if (!userData) {
-        res
-          .status(400)
-          .json({ message: "Please provide a username and email address" });
-      }
       res.json(userData);
     } catch (error) {
       console.log(error);
@@ -70,6 +65,10 @@ const userController = {
       const userData = await User.findOne({
         _id: req.params.id,
       });
+      if (!userData) {
+        console.log("No user found with that id");
+        return res.status(404).json({ message: "No user found with that id" });
+      }
       if (req.body.userName) {
         userData.userName = req.body.userName;
       }
@@ -87,6 +86,10 @@ const userController = {
   async deleteUser(req, res) {
     try {
       const userData = await User.findOne({ _id: req.params.id });
+      if (!userData) {
+        console.log("no user found with that id");
+        return res.status(404).json({ message: "no user found with that id" });
+      }
       const deletedThoughts = await userData.thoughts.forEach(
         async (thoughtObj) => {
           await Thought.deleteOne({ _id: thoughtObj._id });
@@ -96,10 +99,6 @@ const userController = {
       const deletedUser = await User.deleteOne({
         _id: req.params.id,
       });
-      if (!deletedUser) {
-        console.log("no user found with that id");
-        return res.status(404).json({ message: "no user found with that id" });
-      }
 
       res.json(deletedUser);
     } catch (error) {
@@ -110,11 +109,12 @@ const userController = {
 
   async deleteAllUsers(req, res) {
     try {
-      const userData = await User.deleteMany({});
-      if (!userData) {
-        console.log("no user found with that id");
-        return res.status(404).json({ message: "no user found with that id" });
+      const user = await User.find();
+      if (user.length < 1) {
+        console.log("No users exist in database");
+        return res.status(404).json({ message: "No users exist in database" });
       }
+      const userData = await User.deleteMany({});
       res.json(userData);
     } catch (error) {
       console.log(error);
@@ -124,13 +124,18 @@ const userController = {
 
   async addFriend(req, res) {
     try {
+      const user = await User.findOne({ _id: req.params.id });
+      if (!user) {
+        console.log("no user found with that id");
+        return res.status(404).json({ message: "no user found with that id" });
+      }
       const userData = await User.updateOne(
         { _id: req.params.id },
         { $push: { friends: req.body.friendId } }
       );
       if (!req.body.friendId | !req.params.id) {
           console.log("Friend and User Ids are required");
-          res.status(404).json({ message: "Friend and User Ids are required" });
+          return res.status(404).json({ message: "Friend and User Ids are required" });
       }
       res.json(userData);
     } catch (error) {
@@ -141,6 +146,11 @@ const userController = {
 
   async removeFriend(req, res) {
       try {
+        const user = await User.findOne({ _id: req.params.id });
+        if (!user) {
+          console.log("no user found with that id");
+          return res.status(404).json({ message: "no user found with that id" });
+        }
         const userData = await User.updateOne(
             { _id: req.params.id },
             { $pull: { friends: req.body.friendId } }

@@ -6,7 +6,7 @@ const thoughtController = {
       const thoughtData = await Thought.find({});
       if (thoughtData.length < 1) {
         console.log("You need to create a thought first");
-        res.status(500).json({ message: "You need to create a thought first" });
+        res.status(404).json({ message: "You need to create a thought first" });
         return;
       }
       res.json(thoughtData);
@@ -25,7 +25,7 @@ const thoughtController = {
       });
       if (!thoughtData) {
         console.log("No thought found with that id");
-        res.status(500).json({ message: "No thought found with that id" });
+        res.status(404).json({ message: "No thought found with that id" });
         return;
       }
       res.json(thoughtData);
@@ -37,21 +37,17 @@ const thoughtController = {
 
   async updateThought(req, res) {
     try {
-      const thought = await Thought.findOne({ _id: req.params.id });
       const thoughtData = await Thought.findOne({
         _id: req.params.id,
       });
+      if (!thoughtData) {
+        console.log("No thought found with that id");
+        res.status(404).json({ message: "No thought found with that id" });
+        return;
+      }
       if (!req.body.userId) {
         console.log("A 'userId' is required");
         res.status(404).json({ message: "A 'userId' is required" });
-      }
-      if (req.body.thoughtText) {
-        thoughtData.thoughtText = req.body.thoughtText;
-      }
-      if (!thought) {
-        console.log("No thought found with that id");
-        res.status(500).json({ message: "No thought found with that id" });
-        return;
       }
       thoughtData.userId = req.body.userId;
       thoughtData.save();
@@ -64,12 +60,13 @@ const thoughtController = {
 
   async newThought(req, res) {
     try {
-      const thoughtData = await Thought.create(req.body);
       const user = await User.findOne({ _id: req.body.userId });
       if (!user) {
         console.log("No user found with that id");
         return res.status(404).json({ message: "No user found with that id" });
       }
+      
+      const thoughtData = await Thought.create(req.body);
       const userData = await User.updateOne(
         { _id: req.body.userId },
         { $push: { thoughts: thoughtData } }
@@ -85,7 +82,7 @@ const thoughtController = {
     const thought = await Thought.findOne({ _id: req.params.id });
     if (!thought) {
       console.log("No thought by that id");
-      res.status(500).json({ message: "No thought by that id" });
+      res.status(404).json({ message: "No thought by that id" });
       return;
     }
     const thoughtData = await Thought.deleteOne({ _id: req.params.id });
@@ -97,7 +94,7 @@ const thoughtController = {
       const thought = await Thought.find();
       if (thought.length < 1) {
         console.log("No thoughts exist in the database");
-        return res.status(500).json({
+        return res.status(404).json({
           message: "No thoughts exist in the database",
         });
       }
@@ -132,7 +129,7 @@ const thoughtController = {
       const thought = await Thought.findOne({ _id: req.params.id });
       if (!thought) {
         console.log("No thought by that id");
-        return res.status(500).json({ message: "No thought by that id" });
+        return res.status(404).json({ message: "No thought by that id" });
       }
       const thoughtData = await Thought.updateOne(
         { _id: req.params.id },
