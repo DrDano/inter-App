@@ -1,4 +1,10 @@
-const current = Object.values(new Date().toJSON());
+const { format } = require('date-fns');
+
+date = {
+    formatDate(date) {
+        return format(date, 'PPpp', { localize: true });
+    }
+}
 
 timestamp = {
   month: [
@@ -24,6 +30,4 @@ timestamp = {
   },
 };
 
-timestamp.dateFormat(current);
-
-module.exports = timestamp;
+module.exports = date;
