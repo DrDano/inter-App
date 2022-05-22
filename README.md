@@ -9,9 +9,8 @@ Interactive social networking API designed for any frontend platform. Ready, set
 ![](https://img.shields.io/badge/datefns-dep-blue?logo=npm)
 
 ## Description
-
-### Walk-through Video
 ![Walk through video preview](./interApp-walkthrough-image.PNG)
+### Walk-through Video
 [Walk through video link](https://drive.google.com/file/d/1QQ-1rEx9wDw4cKdFj79J6T4CsCGT1IEI/preview)
 
 This application is not deployed, but is a social-networking API designed to be integrated with any application desiring this functionality.
